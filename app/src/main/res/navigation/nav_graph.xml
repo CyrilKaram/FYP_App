@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.example.firsttestapp.FirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_default_fragment"
+            app:destination="@id/default_fragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_background_fragment"
+            app:destination="@id/background_fragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_video_fragment"
+            app:destination="@id/video_fragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_download_fragment"
+            app:destination="@id/download_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/background_fragment"
+        android:name="com.example.firsttestapp.background_fragment"
+        android:label="fragment_background_fragment"
+        tools:layout="@layout/fragment_background_fragment" >
+        <action
+            android:id="@+id/action_background_fragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/default_fragment"
+        android:name="com.example.firsttestapp.default_fragment"
+        android:label="fragment_default_fragment"
+        tools:layout="@layout/fragment_default_fragment" >
+        <action
+            android:id="@+id/action_default_fragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/video_fragment"
+        android:name="com.example.firsttestapp.video_fragment"
+        android:label="fragment_video_fragment"
+        tools:layout="@layout/fragment_video_fragment" >
+        <action
+            android:id="@+id/action_video_fragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/download_fragment"
+        android:name="com.example.firsttestapp.download_fragment"
+        android:label="fragment_download_fragment"
+        tools:layout="@layout/fragment_download_fragment" >
+        <action
+            android:id="@+id/action_download_fragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+</navigation>
