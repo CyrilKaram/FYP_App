@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,15 +18,24 @@ import com.example.firsttestapp.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private ItemViewModel viewModel;
 //Bonjour tout le monde
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ////////////////////////////////////////
+        viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+        viewModel.getSelectedItem().observe(this, item -> {
+            // Perform an action with the latest item data
+            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
+        });
+        /////////////////////////////////////////
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -43,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Toast.makeText(getApplicationContext(),"Now onResume() calls", Toast.LENGTH_LONG).show(); //onStart Called
+//        FirstFragment.getView().findViewByID(R.id.textview_first).setText("Now onStart() calls");
     }
 
     @Override
