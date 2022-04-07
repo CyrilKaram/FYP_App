@@ -9,7 +9,7 @@ import java.util.Random;
 public class QLearning {
 
     private final double alpha = 0.1; // Learning rate
-    private final double epsilon = 0.5; // Exploration rate
+    private final double epsilon = 1; // Exploration rate
     private final double nbtrials = 0;
 
     private final int actionsCount = 5; //Number of states
