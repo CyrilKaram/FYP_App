@@ -26,7 +26,9 @@ import android.net.NetworkInfo;
 
 import androidx.annotation.Nullable;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ItemViewModel viewModel;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
+
     //Bonjour tout le monde
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +65,22 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     System.out.println("Inside " +Thread.currentThread());
                     Runtime runtime = Runtime.getRuntime();
+                    String inputLine = "";
+                    String res = "";
                     try {
                         System.out.println("Start");
                         Process ipProcess = runtime.exec("/system/bin/ping -c 3 8.8.8.8");
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess.getInputStream()));
+
+                        inputLine = bufferedReader.readLine();
+                        while ((inputLine != null)) {
+                            if (inputLine.length() > 0 && inputLine.contains("avg")) {  // when we get to the last line of executed ping command
+                                break;
+                            }
+                            res = res + inputLine + "\n";
+                            inputLine = bufferedReader.readLine();
+                        }
+                        System.out.println("Res: "+res);
                         int exitValue = ipProcess.waitFor();
                         ipProcess.destroy();
 //                    Toast.makeText(getActivity().getApplicationContext(),exitValue, Toast.LENGTH_LONG).show();
