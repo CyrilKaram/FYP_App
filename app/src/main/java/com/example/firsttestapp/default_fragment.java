@@ -87,6 +87,8 @@ public class default_fragment extends Fragment {
                 x = currentTime.getHours(); //Integer between 1 and 24
                 randomView.setText(x.toString());
                 viewModel.selectItem(1);
+                NavHostFragment.findNavController(default_fragment.this)
+                        .navigate(R.id.action_default_fragment_to_FirstFragment);
 //                x++;
             }
         });

@@ -9,8 +9,8 @@ import java.util.Random;
 public class QLearning {
 
     private final double alpha = 0.1; // Learning rate
-    private final double epsilon = 1; // Exploration rate
-    private final double nbtrials = 0;
+    private double epsilon = 1; // Exploration rate
+    private double nbtrials = 0;
 
     private final int actionsCount = 5; //Number of states
 
@@ -22,7 +22,7 @@ public class QLearning {
     private double[] Q; //List of Q values
 
     //Initialize arrays R Q and Actions
-    public void QLearning() {
+    public QLearning() {
         R = new int[actionsCount];
         Q = new double[actionsCount];
         actions =  new int[actionsCount];
