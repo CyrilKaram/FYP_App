@@ -12,9 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.net.URL;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link default_fragment#newInstance} factory method to
@@ -89,6 +94,17 @@ public class default_fragment extends Fragment {
                 viewModel.selectItem(1);
                 NavHostFragment.findNavController(default_fragment.this)
                         .navigate(R.id.action_default_fragment_to_FirstFragment);
+
+//                randomView.setText("Ping Started");/////////////PING//////////
+//                try {
+//                    Ping ping = new Ping(new URL("https://www.google.com:443/"),getActivity().getApplicationContext());
+//                    randomView.setText(ping.getip());
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                    randomView.setText("Error");
+//                }///////////////////PING///////////////////
+
+
 //                x++;
             }
         });

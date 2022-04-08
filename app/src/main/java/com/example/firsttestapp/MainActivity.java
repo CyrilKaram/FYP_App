@@ -20,11 +20,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import androidx.annotation.Nullable;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private ItemViewModel viewModel;
+    ExecutorService executorService = Executors.newFixedThreadPool(4);
     //Bonjour tout le monde
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +49,39 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
+//            Ping p = new Ping(new Executor() {
+//                @Override
+//                public void execute(Runnable runnable) {
+//                System.out.print("We are in the Thread: ");
+//                System.out.println(Thread.currentThread());
+//                }
+//            });
+            System.out.println("Outside " +Thread.currentThread());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Inside " +Thread.currentThread());
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        System.out.println("Start");
+                        Process ipProcess = runtime.exec("/system/bin/ping -c 3 8.8.8.8");
+                        int exitValue = ipProcess.waitFor();
+                        ipProcess.destroy();
+//                    Toast.makeText(getActivity().getApplicationContext(),exitValue, Toast.LENGTH_LONG).show();
+                        System.out.println("ExitValue: "+exitValue);
+                        if(exitValue == 0){
+                            // Success
+                            System.out.println("Reachable");
+                        } else {
+                            // Failure
+                            System.out.println("Unreachable");
+                        }
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                        System.out.println("Error");
+                    }
+                }
+            }).start();
         });
         /////////////////////////////////////////
 
@@ -91,4 +139,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 }
