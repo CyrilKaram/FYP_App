@@ -88,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
                         if(exitValue == 0){
                             // Success
                             System.out.println("Reachable");
+//                            Toast.makeText(getApplicationContext(),"Reachable", Toast.LENGTH_LONG).show();
                         } else {
                             // Failure
                             System.out.println("Unreachable");
+//                            Toast.makeText(getApplicationContext(),"Unreachable", Toast.LENGTH_LONG).show();
                         }
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
