@@ -8,9 +8,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="screenBackground">#2196F3</color>
-    <color name="buttonBackground">#BBDEFB</color>
-    <color name="screenBackground2">#26C6DA</color>
+    <color name="screenBackground">#92BEF5</color>
+    <color name="buttonBackground">#050A16</color>
+    <color name="screenBackground2">#2D4C6E</color>
     <color name="navy_button_background">#000080</color>
     <color name="lime">#00FF00</color>
     <color name="FloralWhite">#FFFAF0</color>
