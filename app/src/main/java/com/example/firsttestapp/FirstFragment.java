@@ -41,6 +41,10 @@ public class FirstFragment extends Fragment {
 
     }
 
+    public void setText(String yourText){
+        showCountTextView.setText(yourText);
+    }
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

@@ -22,6 +22,7 @@ import com.example.firsttestapp.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,11 +55,13 @@ public class MainActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
 
+
     //Bonjour tout le monde
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
         ////////////////////////////////////////
         viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
         viewModel.getSelectedItem().observe(this, item -> {
@@ -105,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
                             // Failure
                             System.out.println("Unreachable");
 //                            Toast.makeText(getApplicationContext(),"Unreachable", Toast.LENGTH_LONG).show();
+//                            text.setText("Unreachable");
+                            FirstFragment conv = new FirstFragment();
+//                            conv.setText("Unreachable");
                         }
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
