@@ -86,6 +86,7 @@ public class video_fragment extends Fragment {
                 viewModel.selectItem(3);
                 NavHostFragment.findNavController(video_fragment.this)
                         .navigate(R.id.action_video_fragment_to_FirstFragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().show();
 //                x++;
             }
         });

@@ -85,6 +85,7 @@ public class download_fragment extends Fragment {
                 viewModel.selectItem(4);
                 NavHostFragment.findNavController(download_fragment.this)
                         .navigate(R.id.action_download_fragment_to_FirstFragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().show();
 //                x++;
             }
         });

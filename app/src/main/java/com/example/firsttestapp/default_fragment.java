@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,7 @@ public class default_fragment extends Fragment {
                 viewModel.selectItem(1);
                 NavHostFragment.findNavController(default_fragment.this)
                         .navigate(R.id.action_default_fragment_to_FirstFragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().show();
 
 //                randomView.setText("Ping Started");/////////////PING//////////
 //                try {
@@ -109,4 +111,10 @@ public class default_fragment extends Fragment {
             }
         });
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        ((MainActivity) getActivity()).getFloatingActionButton().show();
+//    }
+
 }

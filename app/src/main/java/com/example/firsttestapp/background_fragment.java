@@ -84,6 +84,7 @@ public class background_fragment extends Fragment {
                 viewModel.selectItem(2);
                 NavHostFragment.findNavController(background_fragment.this)
                         .navigate(R.id.action_background_fragment_to_FirstFragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().show();
 //                x++;
             }
         });

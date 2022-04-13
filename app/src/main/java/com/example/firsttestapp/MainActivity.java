@@ -3,6 +3,7 @@ package com.example.firsttestapp;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.format.Formatter;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -40,6 +42,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,13 +64,6 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
-//            Ping p = new Ping(new Executor() {
-//                @Override
-//                public void execute(Runnable runnable) {
-//                System.out.print("We are in the Thread: ");
-//                System.out.println(Thread.currentThread());
-//                }
-//            });
             System.out.println("Outside " +Thread.currentThread());
             new Thread(new Runnable() {
                 @Override
@@ -201,56 +197,74 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public FloatingActionButton getFloatingActionButton() {
+        return binding.fab;
+    }
+
     //Related to iPerf
     //This function is used to copy the iperf executable to a directory which execute permissions for this application, and then gives it execute permissions.
     //It runs on every initiation of an iperf test, but copies the file only if it's needed.
-    public void initIperf() {
-//        final TextView tv = (TextView) findViewById(R.id.OutputText);
-        InputStream in;
-
-        try {
-            //The asset "iperf" (from assets folder) inside the activity is opened for reading.
-            in = getResources().getAssets().open("iperf");
-        } catch (IOException e2) {
-            Toast.makeText(getApplicationContext(),"3\nError occurred while accessing system resources, please reboot and try again.2", Toast.LENGTH_LONG).show();
-            return;
-        }
-        try {
-            //Checks if the file already exists, if not copies it.
-            new FileInputStream("/data/data/com.example.firsttestapp/iperf");
-        } catch (FileNotFoundException e1) {
-            try {
-                //The file named "iperf" is created in a system designated folder for this application.
-                OutputStream out = new FileOutputStream("/data/data/com.example.firsttestapp/iperf", false);
-                Toast.makeText(getApplicationContext(),"Output Worked", Toast.LENGTH_LONG).show();
-                // Transfer bytes from "in" to "out"
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-                in.close();
-                out.close();
-                //After the copy operation is finished, we give execute permissions to the "iperf" executable using shell commands.
-                Process processChmod = Runtime.getRuntime().exec("/system/bin/chmod 744 /data/data/iperf.project/iperf");
-                // Executes the command and waits untill it finishes.
-                processChmod.waitFor();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(),"4 Error occurred while accessing system resources, please reboot and try again.3", Toast.LENGTH_LONG).show();
-                return;
-            } catch (InterruptedException e) {
-                Toast.makeText(getApplicationContext(),"5\nError occurred while accessing system resources, please reboot and try again.4", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            //Creates an instance of the class IperfTask for running an iperf test, then executes.
-            IperfTask iperfTask = new IperfTask();
-            iperfTask.execute();
-            return;
-        }
-        //Creates an instance of the class IperfTask for running an iperf test, then executes.
-        IperfTask iperfTask = new IperfTask();
-        iperfTask.execute();
-        return;
-    }
+//    public void initIperf() {
+////        final TextView tv = (TextView) findViewById(R.id.OutputText);
+//        InputStream in;
+//
+//        try {
+//            //The asset "iperf" (from assets folder) inside the activity is opened for reading.
+//            in = getResources().getAssets().open("iperf");
+//        } catch (IOException e2) {
+//            Toast.makeText(getApplicationContext(),"3\nError occurred while accessing system resources, please reboot and try again.2", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        try {
+//            //Checks if the file already exists, if not copies it.
+//            new FileInputStream("/data/data/com.example.firsttestapp/iperf");
+//        } catch (FileNotFoundException e1) {
+//            try {
+//                //The file named "iperf" is created in a system designated folder for this application.
+//                OutputStream out = new FileOutputStream("/data/data/com.example.firsttestapp/iperf", false);
+//                Toast.makeText(getApplicationContext(),"Output Worked", Toast.LENGTH_LONG).show();
+//                // Transfer bytes from "in" to "out"
+//                byte[] buf = new byte[1024];
+//                int len;
+//                while ((len = in.read(buf)) > 0) {
+//                    out.write(buf, 0, len);
+//                }
+//                in.close();
+//                out.close();
+//                //After the copy operation is finished, we give execute permissions to the "iperf" executable using shell commands.
+//                Process processChmod = Runtime.getRuntime().exec("/system/bin/chmod 744 /data/data/iperf.project/iperf");
+//                // Executes the command and waits untill it finishes.
+//                processChmod.waitFor();
+//            } catch (IOException e) {
+//                Toast.makeText(getApplicationContext(),"4 Error occurred while accessing system resources, please reboot and try again.3", Toast.LENGTH_LONG).show();
+//                return;
+//            } catch (InterruptedException e) {
+//                Toast.makeText(getApplicationContext(),"5\nError occurred while accessing system resources, please reboot and try again.4", Toast.LENGTH_LONG).show();
+//                return;
+//            }
+//
+//            //Creates an instance of the class IperfTask for running an iperf test, then executes.
+//            IperfTask iperfTask = new IperfTask();
+//            iperfTask.execute();
+//            return;
+//        }
+//        //Creates an instance of the class IperfTask for running an iperf test, then executes.
+//        IperfTask iperfTask = new IperfTask();
+//        iperfTask.execute();
+//        return;
+//    }
+//    @Override
+//    public void onBackPressed() {
+//        tellFragments();
+//        super.onBackPressed();
+//        getFloatingActionButton().show();
+//    }
+//
+//    private void tellFragments(){
+//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//        for(Fragment f : fragments){
+//            if(f != null && f instanceof default_fragment)
+//                ((default_fragment)f).onBackPressed();
+//        }
+//    }
 }

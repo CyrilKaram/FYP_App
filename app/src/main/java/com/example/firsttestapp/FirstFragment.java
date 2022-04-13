@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.firsttestapp.databinding.FragmentFirstBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 public class FirstFragment extends Fragment {
 
@@ -48,6 +49,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_default_fragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().hide();
             }
         });
 
@@ -56,6 +58,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_background_fragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().hide();
             }
         });
 
@@ -64,6 +67,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_video_fragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().hide();
             }
         });
 
@@ -72,6 +76,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_download_fragment);
+                ((MainActivity) getActivity()).getFloatingActionButton().hide();
             }
         });
     }
