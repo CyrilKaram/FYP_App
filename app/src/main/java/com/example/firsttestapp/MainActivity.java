@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private ItemViewModel viewModel;
+    private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
 
 
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        textres = (TextView) findViewById(R.id.textview_first);
+
 
 //        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
         ////////////////////////////////////////
@@ -68,56 +71,7 @@ public class MainActivity extends AppCompatActivity {
             // Perform an action with the latest item data
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Inside " +Thread.currentThread());
-                    Runtime runtime = Runtime.getRuntime();
-//                    String inputLine = "";
-//                    String res = "";
-                    StringBuffer res = new StringBuffer();
-                    try {
-                        System.out.println("Start");
-//                        Process ipProcess = runtime.exec("/system/bin/iperf -c iperf.par2.as49434.net");
-                        Process ipProcess = runtime.exec("/system/bin/ping -c 3 8.8.8.8");
-//                        Process ipProcess = runtime.exec(" ls /system/bin");
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess.getInputStream()));
-
-//                        inputLine = bufferedReader.readLine();
-//                        while ((inputLine != null)) {
-//                            if (inputLine.length() > 0 && inputLine.contains("avg")) {  // when we get to the last line of executed ping command
-//                                break;
-//                            }
-//                            res = res + inputLine + "\n";
-//                            inputLine = bufferedReader.readLine();
-//                        }
-                        String line = "";
-                        while ((line = bufferedReader.readLine())!= null) {
-                            res.append(line + "\n");
-                        }
-                        System.out.println("Res: "+res);
-                        int exitValue = ipProcess.waitFor();
-                        ipProcess.destroy();
-//                    Toast.makeText(getActivity().getApplicationContext(),exitValue, Toast.LENGTH_LONG).show();
-                        System.out.println("ExitValue: "+exitValue);
-                        if(exitValue == 0){
-                            // Success
-                            System.out.println("Reachable");
-//                            Toast.makeText(getApplicationContext(),"Reachable", Toast.LENGTH_LONG).show();
-                        } else {
-                            // Failure
-                            System.out.println("Unreachable");
-//                            Toast.makeText(getApplicationContext(),"Unreachable", Toast.LENGTH_LONG).show();
-//                            text.setText("Unreachable");
-                            FirstFragment conv = new FirstFragment();
-//                            conv.setText("Unreachable");
-                        }
-                    } catch (IOException | InterruptedException e) {
-                        e.printStackTrace();
-                        System.out.println("Error");
-                    }
-                }
-            }).start();
+            new Ping().execute();
             new SpeedTestTask().execute();
         });
         /////////////////////////////////////////
