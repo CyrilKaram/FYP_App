@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }).start();
+            new SpeedTestTask().execute();
         });
         /////////////////////////////////////////
 
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 //                getCurrentIP();
 //            }
 //        }).start();
-        getCurrentIP(); //////////////////////////////////////////////////
+        getCurrentIP(); /////////////////////////////////////////////////
 //        initIperf();
     }
 
