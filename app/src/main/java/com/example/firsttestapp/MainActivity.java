@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
             // Perform an action with the latest item data
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-            new Ping1().execute();
-            new SpeedTestTask1().execute();
+            new Ping().execute();
+            new SpeedTestTask().execute();
         });
         /////////////////////////////////////////
 
@@ -104,17 +104,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume()
+    protected void onStart()
     {
-        super.onResume();
-        Toast.makeText(getApplicationContext(),"Now onResume() calls", Toast.LENGTH_LONG).show(); //onStart Called
-//        FirstFragment.getView().findViewByID(R.id.textview_first).setText("Now onStart() calls");
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                getCurrentIP();
-//            }
-//        }).start();
+        super.onStart();
+        Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
         getCurrentIP(); /////////////////////////////////////////////////
 //        initIperf();
     }
@@ -172,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class Ping1 extends AsyncTask<Void, Void, String> {
+    private class Ping extends AsyncTask<Void, Void, String> {
 
         private StringBuffer res = new StringBuffer();
 
@@ -218,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class SpeedTestTask1 extends AsyncTask<Void, Void, String> {
+    public class SpeedTestTask extends AsyncTask<Void, Void, String> {
 
         private int x =0;
         private String res="";
