@@ -45,6 +45,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -62,9 +63,25 @@ public class MainActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
     private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
-    private int ss = 0;
-    private String dd ="";
 
+    // CRITERIA
+    private int latency = 0;
+    private String throughput ="";
+
+    // RL PARAMETERS
+    ArrayList<State> state_list = new ArrayList<State>();
+    ArrayList<QLearning> learner_list = new ArrayList<QLearning>();
+    private int ID = 1;
+    Integer[] action_list = {1,2,3};
+    private int current_time;
+    private int current_location;
+    private int current_scenario;
+    double[][] weights = {
+            {0.412426357, 0.179835921, 0.089147185, 0.225188033, 0.093402504},
+            {0.168448384, 0.555575253, 0.04742412, 0.163219626, 0.065332617},
+            {0.373626374, 0.040934066, 0.19514652, 0.19514652, 0.19514652},
+            {0.263947285, 0.052846664, 0.12804264, 0.438119634, 0.117043777}
+    };
 
     //Bonjour tout le monde
     @Override
@@ -78,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
+            current_scenario=item;
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
             new Ping().execute();
@@ -164,6 +182,20 @@ public class MainActivity extends AppCompatActivity {
         return binding.fab;
     }
 
+    public State find_state(int t, int l, int sc){
+        for (State s : state_list){
+            if (t==s.gettime() && l==s.getlocation() && sc==s.getscenario() ){
+                return s;
+            }
+        }
+        QLearning temp_agent = new QLearning();
+        learner_list.add(temp_agent);
+        State temp_state = new State(this.ID,temp_agent,t,l,sc);
+        state_list.add(temp_state);
+        this.ID++;
+        return temp_state; //Then take decision(QL), then compute criteria (main act), then update Q (QL)
+    }
+
 
     private class Ping extends AsyncTask<Void, Void, String> {
 
@@ -194,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Failure
                     System.out.println("Unreachable");
-                    FirstFragment conv = new FirstFragment();
                 }
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
@@ -206,8 +237,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            ss++;
-            System.out.println("SS: "+ss);
+            latency++;
+            System.out.println("SS: "+latency);
         }
     }
 
@@ -231,8 +262,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("speedtest", "[COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
                     System.out.println("X= "+x);
                     res = report.getTransferRateBit().toString();
-                    dd=res;
-                    System.out.println("DD: "+dd);
+                    throughput=res;
+                    System.out.println("DD: "+throughput);
                 }
 
                 @Override
