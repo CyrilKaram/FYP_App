@@ -1,6 +1,7 @@
 package com.example.firsttestapp;
 // Au Revoir
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -48,6 +50,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import fr.bmartel.speedtest.SpeedTestReport;
+import fr.bmartel.speedtest.SpeedTestSocket;
+import fr.bmartel.speedtest.inter.ISpeedTestListener;
+import fr.bmartel.speedtest.model.SpeedTestError;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -55,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
     private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private int ss = 0;
+    private String dd ="";
 
 
     //Bonjour tout le monde
@@ -71,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
             // Perform an action with the latest item data
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-            new Ping().execute();
-            new SpeedTestTask().execute();
+            new Ping1().execute();
+            new SpeedTestTask1().execute();
         });
         /////////////////////////////////////////
 
@@ -162,70 +171,104 @@ public class MainActivity extends AppCompatActivity {
         return binding.fab;
     }
 
-    //Related to iPerf
-    //This function is used to copy the iperf executable to a directory which execute permissions for this application, and then gives it execute permissions.
-    //It runs on every initiation of an iperf test, but copies the file only if it's needed.
-//    public void initIperf() {
-////        final TextView tv = (TextView) findViewById(R.id.OutputText);
-//        InputStream in;
-//
-//        try {
-//            //The asset "iperf" (from assets folder) inside the activity is opened for reading.
-//            in = getResources().getAssets().open("iperf");
-//        } catch (IOException e2) {
-//            Toast.makeText(getApplicationContext(),"3\nError occurred while accessing system resources, please reboot and try again.2", Toast.LENGTH_LONG).show();
-//            return;
+
+    private class Ping1 extends AsyncTask<Void, Void, String> {
+
+        private StringBuffer res = new StringBuffer();
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            System.out.println("Inside " +Thread.currentThread());
+            Runtime runtime = Runtime.getRuntime();
+
+            try {
+                System.out.println("Start");
+                Process ipProcess = runtime.exec("/system/bin/ping -c 3 8.8.8.8");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess.getInputStream()));
+
+                String line = "";
+                while ((line = bufferedReader.readLine())!= null) {
+                    res.append(line + "\n");
+                }
+                System.out.println("Res: "+res);
+
+                int exitValue = ipProcess.waitFor();
+                ipProcess.destroy();
+                System.out.println("ExitValue: "+exitValue);
+                if(exitValue == 0){
+                    // Success
+                    System.out.println("Reachable");
+                } else {
+                    // Failure
+                    System.out.println("Unreachable");
+                    FirstFragment conv = new FirstFragment();
+                }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("Error");
+            }
+
+            return res.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            ss++;
+            System.out.println("SS: "+ss);
+        }
+    }
+
+    public class SpeedTestTask1 extends AsyncTask<Void, Void, String> {
+
+        private int x =0;
+        private String res="";
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            SpeedTestSocket speedTestSocket = new SpeedTestSocket();
+
+            // add a listener to wait for speedtest completion and progress
+            speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
+
+                @Override
+                public void onCompletion(SpeedTestReport report) {
+                    // called when download/upload is finished
+                    Log.v("speedtest", "[COMPLETED] rate in octet/s : " + report.getTransferRateOctet());
+                    Log.v("speedtest", "[COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
+                    System.out.println("X= "+x);
+                    res = report.getTransferRateBit().toString();
+                    dd=res;
+                    System.out.println("DD: "+dd);
+                }
+
+                @Override
+                public void onError(SpeedTestError speedTestError, String errorMessage) {
+                    // called when a download/upload error occur
+                }
+
+                @Override
+                public void onProgress(float percent, SpeedTestReport report) {
+                    // called to notify download/upload progress
+                    x++;
+//                Log.v("speedtest", "[PROGRESS] progress : " + percent + "%");
+//                Log.v("speedtest", "[PROGRESS] rate in octet/s : " + report.getTransferRateOctet());
+//                Log.v("speedtest", "[PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
+                }
+            });
+
+            speedTestSocket.startDownload("http://ipv4.ikoula.testdebit.info/1M.iso");
+//        speedTestSocket.startFixedDownload("http://ipv4.ikoula.testdebit.info/10M.iso", 1000);
+
+            return null;
+        }
+
+//        @Override
+//        protected void onPostExecute(String s) {
+//            dd=this.res;
+//            System.out.println("DD: "+dd);
 //        }
-//        try {
-//            //Checks if the file already exists, if not copies it.
-//            new FileInputStream("/data/data/com.example.firsttestapp/iperf");
-//        } catch (FileNotFoundException e1) {
-//            try {
-//                //The file named "iperf" is created in a system designated folder for this application.
-//                OutputStream out = new FileOutputStream("/data/data/com.example.firsttestapp/iperf", false);
-//                Toast.makeText(getApplicationContext(),"Output Worked", Toast.LENGTH_LONG).show();
-//                // Transfer bytes from "in" to "out"
-//                byte[] buf = new byte[1024];
-//                int len;
-//                while ((len = in.read(buf)) > 0) {
-//                    out.write(buf, 0, len);
-//                }
-//                in.close();
-//                out.close();
-//                //After the copy operation is finished, we give execute permissions to the "iperf" executable using shell commands.
-//                Process processChmod = Runtime.getRuntime().exec("/system/bin/chmod 744 /data/data/iperf.project/iperf");
-//                // Executes the command and waits untill it finishes.
-//                processChmod.waitFor();
-//            } catch (IOException e) {
-//                Toast.makeText(getApplicationContext(),"4 Error occurred while accessing system resources, please reboot and try again.3", Toast.LENGTH_LONG).show();
-//                return;
-//            } catch (InterruptedException e) {
-//                Toast.makeText(getApplicationContext(),"5\nError occurred while accessing system resources, please reboot and try again.4", Toast.LENGTH_LONG).show();
-//                return;
-//            }
-//
-//            //Creates an instance of the class IperfTask for running an iperf test, then executes.
-//            IperfTask iperfTask = new IperfTask();
-//            iperfTask.execute();
-//            return;
-//        }
-//        //Creates an instance of the class IperfTask for running an iperf test, then executes.
-//        IperfTask iperfTask = new IperfTask();
-//        iperfTask.execute();
-//        return;
-//    }
-//    @Override
-//    public void onBackPressed() {
-//        tellFragments();
-//        super.onBackPressed();
-//        getFloatingActionButton().show();
-//    }
-//
-//    private void tellFragments(){
-//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-//        for(Fragment f : fragments){
-//            if(f != null && f instanceof default_fragment)
-//                ((default_fragment)f).onBackPressed();
-//        }
-//    }
+
+    }
+
 }
