@@ -135,9 +135,24 @@ public class QLearning {
     public void update_Q(int act, double[] w, double throughp, double batt, double jitt, double packloss, double lat){
         //Normalisation
         throughp=throughp/30; //30Mbps
-        jitt=6/jitt;
-        packloss=0.1/packloss; //0.1%
-        lat=25/lat; //25ms
+
+        if (jitt!=0){
+            jitt=6/jitt;
+        } else {
+            jitt=1;
+        }
+
+        if (packloss!=0){
+            packloss=0.1/packloss; //0.1%
+        } else{
+            packloss=1;
+        }
+
+        if(lat!=0){
+            lat=25/lat; //25ms
+        } else {
+            lat=1;
+        }
 
         //UPDATE Q = (1-alpha) * Q +alpha * reward
         Q[act]=(1-alpha)*Q[act] + alpha * (throughp*w[0] +batt*w[1] +jitt*w[2] +packloss*w[3] +lat*w[4]);
