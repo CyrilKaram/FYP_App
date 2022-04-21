@@ -4,11 +4,13 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
@@ -83,13 +85,18 @@ public class MainActivity extends AppCompatActivity {
             {0.263947285, 0.052846664, 0.12804264, 0.438119634, 0.117043777}
     };
 
+
+
     //Bonjour tout le monde
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
 
-
+        CellIDwithLocation cellIDwithLocation = new CellIDwithLocation(this);
+        String CellID = cellIDwithLocation.cellID;
+        System.out.println("Hi");
+        System.out.println(CellID);
 //        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
         ////////////////////////////////////////
         viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
