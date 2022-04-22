@@ -93,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
 
-        CellIDwithLocation cellIDwithLocation = new CellIDwithLocation(this);
-        String CellID = cellIDwithLocation.cellID;
-        System.out.println("Hi");
-        System.out.println(CellID);
+
 //        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
         ////////////////////////////////////////
         viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
@@ -134,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
         getCurrentIP(); /////////////////////////////////////////////////
+        CellIDwithLocation cellIDwithLocation = new CellIDwithLocation(this);
+        String CellID = cellIDwithLocation.cellID;
+        System.out.println("Hi");
+        System.out.println(CellID);
+        Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
 //        initIperf();
     }
 
