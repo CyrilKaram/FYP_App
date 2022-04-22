@@ -45,49 +45,23 @@ public class CellIDwithLocation {
     public String cellID;
     private MainActivity act;
 
-   // public String get_cellID() { return cellID; }
+
 
     private static final String TAG ="CellIDwithLocation";
-    //Button btLocation;
+
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
     TelephonyManager telephonyManager;
-/*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-*/
+
     CellIDwithLocation(MainActivity main){
         //Assign variable
         this.act = main;
-        /*btLocation = findViewById(R.id.bt_Location);
-        textView1 = findViewById(R.id.text_view1);
-        textView2 = findViewById(R.id.text_view2);
-        textView3 = findViewById(R.id.text_view3);
-        textView4 = findViewById(R.id.text_view4);
-        textView5 = findViewById(R.id.text_view5);
-        textView6 = findViewById(R.id.text_view6);
-        textView7 = findViewById(R.id.text_view7);
-        textView8 = findViewById(R.id.text_view8);
-        textView9 = findViewById(R.id.text_view9);
-        textView10 = findViewById(R.id.text_view10);
-        textView11 = findViewById(R.id.text_view11);
-        textView12 = findViewById(R.id.text_view12);
-        textView13 = findViewById(R.id.text_view13);
-        textView14 = findViewById(R.id.text_view14);
-        textView15 = findViewById(R.id.text_view15);
-        textView16 = findViewById(R.id.text_view16);
-        textView17 = findViewById(R.id.text_view17);
-*/
+
         //Initialize fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(act);
 
-        //btLocation.setOnClickListener(new View.OnClickListener() {
-           // @RequiresApi(api = Build.VERSION_CODES.Q)
-          //  @Override
-          //  public void permission() {
+
         System.out.println("before permission");
                 //Check permission
                 if (ActivityCompat.checkSelfPermission(act,
@@ -98,7 +72,7 @@ public class CellIDwithLocation {
                                 Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     //When permission granted
                     getLocation();
-                    //this.cellID = this.getCellID();
+
                     System.out.println("permission");
                     System.out.println(getCellID());
                 }else {
@@ -111,9 +85,7 @@ public class CellIDwithLocation {
                             new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},44);
                 }
             }
-       // });
 
- //   }
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     private String getCellID() {
@@ -134,7 +106,6 @@ public class CellIDwithLocation {
                 BaseStation bs = bindData(cellInfo);
                 Log.i(TAG, bs.toString());
             }
-            //return "test1";
             return cellNumber + "\n" + main_BS.toString();
 
         }
