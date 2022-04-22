@@ -42,7 +42,7 @@ public class CellIDwithLocation {
 
     //Initialize variable
 
-    public String cellID;
+    private String cellID;
     private final MainActivity act;
 
 
@@ -74,7 +74,8 @@ public class CellIDwithLocation {
                     getLocation();
 
                     System.out.println("permission");
-                    System.out.println(getCellID());
+//                    System.out.println(getCellID());
+                    getCID();
                 }else {
                     //When permission denied
                     ActivityCompat.requestPermissions(act,
@@ -88,7 +89,7 @@ public class CellIDwithLocation {
 
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
-    private String getCellID() {
+    public String getCID() {
         telephonyManager = (TelephonyManager) act.getSystemService(Context.TELEPHONY_SERVICE);
         LocationManager locationManager = (LocationManager) act.getSystemService(Context.LOCATION_SERVICE);
         String provider = LocationManager.GPS_PROVIDER;
@@ -107,10 +108,13 @@ public class CellIDwithLocation {
                 Log.i(TAG, bs.toString());
             }
             //return cellNumber + "\n" + main_BS.toString();
-            return main_BS.toString();
-
+            this.cellID=main_BS.toString();
+            return this.cellID;
         }
+    }
 
+    public String getCellID() {
+        return cellID;
     }
 
     private BaseStation bindData(CellInfo cellInfo) {

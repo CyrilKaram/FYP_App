@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
 
-        /*CellIDwithLocation*/ cellIDwithLocation = new CellIDwithLocation(this);
-        CellID = cellIDwithLocation.cellID;
+        getLocation();
+
 
 
 //        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
@@ -107,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
             current_scenario=item;
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-            new Ping().execute();
-            new SpeedTestTask().execute();
+//            new Ping().execute();
+//            new SpeedTestTask().execute();
+            getLocation();
         });
         /////////////////////////////////////////
 
@@ -171,6 +172,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void getLocation(){
+        cellIDwithLocation = new CellIDwithLocation(this);
+        CellID = cellIDwithLocation.getCellID();
+        System.out.println(CellID);
+        Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
     }
 
     public void getCurrentIP() {
