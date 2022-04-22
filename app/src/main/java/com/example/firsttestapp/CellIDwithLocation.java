@@ -107,9 +107,10 @@ public class CellIDwithLocation {
                 BaseStation bs = bindData(cellInfo);
                 Log.i(TAG, bs.toString());
             }
+
             //return cellNumber + "\n" + main_BS.toString();
             this.cellID=main_BS.toString();
-            return this.cellID;
+            return "null";
         }
     }
 

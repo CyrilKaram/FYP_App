@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
 
-        getLocation();
+        this.getLocation();
 
 
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Outside " +Thread.currentThread());
 //            new Ping().execute();
 //            new SpeedTestTask().execute();
-            getLocation();
+            this.getLocation();
         });
         /////////////////////////////////////////
 
@@ -177,8 +177,9 @@ public class MainActivity extends AppCompatActivity {
     public void getLocation(){
         cellIDwithLocation = new CellIDwithLocation(this);
         CellID = cellIDwithLocation.getCellID();
-        System.out.println(CellID);
-        Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
+        System.out.println("cell ID: "+CellID);
+
+        //Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
     }
 
     public void getCurrentIP() {
