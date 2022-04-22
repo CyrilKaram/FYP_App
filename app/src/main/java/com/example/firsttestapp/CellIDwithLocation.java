@@ -43,7 +43,7 @@ public class CellIDwithLocation {
     //Initialize variable
 
     public String cellID;
-    private MainActivity act;
+    private final MainActivity act;
 
 
 
@@ -106,7 +106,8 @@ public class CellIDwithLocation {
                 BaseStation bs = bindData(cellInfo);
                 Log.i(TAG, bs.toString());
             }
-            return cellNumber + "\n" + main_BS.toString();
+            //return cellNumber + "\n" + main_BS.toString();
+            return main_BS.toString();
 
         }
 

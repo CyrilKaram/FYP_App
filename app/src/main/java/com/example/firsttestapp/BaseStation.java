@@ -130,7 +130,7 @@ public class BaseStation {
 
     @Override
     public String toString() {
-        return "BaseStation{" +
+        /*return "BaseStation{" +
                 "mcc=" + mcc +
                 ", mnc=" + mnc +
                 ", lac=" + lac +
@@ -143,6 +143,7 @@ public class BaseStation {
                 ", signalLevel=" + signalLevel +
                 ", dbm=" + dbm +
                 ", type='" + type + '\'' +
-                '}';
+                '}'; */
+        return String.valueOf(cid);
     }
 }

@@ -55,6 +55,7 @@ import java.util.concurrent.Executors;
 
 import fr.bmartel.speedtest.SpeedTestReport;
 import fr.bmartel.speedtest.SpeedTestSocket;
+import fr.bmartel.speedtest.SpeedTestTask;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 
@@ -85,13 +86,17 @@ public class MainActivity extends AppCompatActivity {
             {0.263947285, 0.052846664, 0.12804264, 0.438119634, 0.117043777}
     };
 
-
+    CellIDwithLocation cellIDwithLocation;
+    String CellID;
 
     //Bonjour tout le monde
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
+
+        /*CellIDwithLocation*/ cellIDwithLocation = new CellIDwithLocation(this);
+        CellID = cellIDwithLocation.cellID;
 
 
 //        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
@@ -131,11 +136,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
         getCurrentIP(); /////////////////////////////////////////////////
-        CellIDwithLocation cellIDwithLocation = new CellIDwithLocation(this);
-        String CellID = cellIDwithLocation.cellID;
         System.out.println("Hi");
-        System.out.println(CellID);
-        Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
+        /*cellIDwithLocation = new CellIDwithLocation(this);
+        CellID = cellIDwithLocation.cellID;*/
+        //System.out.println(CellID);
+        //Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
 //        initIperf();
     }
 
