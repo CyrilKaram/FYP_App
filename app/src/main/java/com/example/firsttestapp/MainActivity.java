@@ -116,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
             current_scenario=item;
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-//            new Ping().execute();
+            new Ping().execute();
 //            new SpeedTestTask().execute();
-            this.getLocation();
+//            this.getLocation();
         });
         /////////////////////////////////////////
 
@@ -256,14 +256,40 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 System.out.println("Start");
-                Process ipProcess = runtime.exec("/system/bin/ping -c 3 8.8.8.8");
+                Process ipProcess = runtime.exec("/system/bin/ping -c 10 8.8.8.8");
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess.getInputStream()));
 
                 String line = "";
+                double[] ttls= new double[10];
+                int ind =0;
                 while ((line = bufferedReader.readLine())!= null) {
                     res.append(line + "\n");
+                    if(line.contains("packet loss")){
+                        int i= line.indexOf("received");
+                        int j= line.indexOf("%");
+                        loss = Double.parseDouble(line.substring(i+10, j));
+                        System.out.println("Loss "+loss);
+                    }
+                    if(line.contains("avg")){
+                        int i=line.indexOf("/", 36);
+                        int j=line.indexOf("/", i+1);
+                        latency = Double.parseDouble(line.substring(i+1, j))/2;
+                        System.out.println("Latency "+latency);
+                    }
+                    if(line.contains("ttl")) {
+                        int i=line.indexOf("ttl");
+                        int j=line.indexOf("time");
+                        double ttl1= Double.parseDouble(line.substring(i+4, j-1));
+                        ttls[ind]=ttl1;
+                        ind++;
+                    }
                 }
-                System.out.println("Res: "+res);
+                double ji=0;
+                for (int i=1;i<ttls.length;i++) {
+                    ji=ji+Math.abs(ttls[i]-ttls[i-1]);
+                }
+                jitter=ji/(ttls.length-1);
+                System.out.println("Jitter " +jitter);
 
                 int exitValue = ipProcess.waitFor();
                 ipProcess.destroy();
