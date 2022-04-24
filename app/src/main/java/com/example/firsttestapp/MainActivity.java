@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<QLearning> learner_list = new ArrayList<QLearning>();
     private int ID = 1;
     Integer[] action_list = {1,2,3};
+    String[] action_names = {"2G","3G","4G"};
     private int current_time;
     private int current_location;
     private int current_scenario;
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
             {0.373626374, 0.040934066, 0.19514652, 0.19514652, 0.19514652},
             {0.263947285, 0.052846664, 0.12804264, 0.438119634, 0.117043777}
     };
+    State current_state;
+    int chosen_action;
 
     CellIDwithLocation cellIDwithLocation;
     String CellID;
@@ -174,10 +177,11 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void getLocation(){
+    public String getLocation(){
         cellIDwithLocation = new CellIDwithLocation(this);
         CellID = cellIDwithLocation.getCellID();
         System.out.println("cell ID: "+CellID);
+        return CellID;
 
         //Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
     }
@@ -203,6 +207,15 @@ public class MainActivity extends AppCompatActivity {
 
     public FloatingActionButton getFloatingActionButton() {
         return binding.fab;
+    }
+
+    public void RL_Decision(){
+        current_state=find_state(current_time,current_location,current_scenario);
+        chosen_action =current_state.getlearner().take_decision();
+        String res = "Please Choose: "+action_names[chosen_action];
+        Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show();
+        // Take User to settings and change variable check settings
+        // Then go to onStart and call the RL_Study
     }
 
     public State find_state(int t, int l, int sc){
