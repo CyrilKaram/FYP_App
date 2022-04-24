@@ -48,6 +48,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -68,8 +70,11 @@ public class MainActivity extends AppCompatActivity {
     ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     // CRITERIA
-    private int latency = 0;
+    private double latency = 0;
     private String throughput ="";
+    private double jitter = 0;
+    private double loss = 0;
+    private double[] battery = {0.9,0.8,0.7};
 
     // RL PARAMETERS
     ArrayList<State> state_list = new ArrayList<State>();
@@ -80,14 +85,15 @@ public class MainActivity extends AppCompatActivity {
     private int current_time;
     private int current_location;
     private int current_scenario;
+    State current_state;
+    int chosen_action;
     double[][] weights = {
             {0.412426357, 0.179835921, 0.089147185, 0.225188033, 0.093402504},
             {0.168448384, 0.555575253, 0.04742412, 0.163219626, 0.065332617},
             {0.373626374, 0.040934066, 0.19514652, 0.19514652, 0.19514652},
             {0.263947285, 0.052846664, 0.12804264, 0.438119634, 0.117043777}
     };
-    State current_state;
-    int chosen_action;
+    Boolean settings_check = false;
 
     CellIDwithLocation cellIDwithLocation;
     String CellID;
@@ -141,11 +147,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
         getCurrentIP(); /////////////////////////////////////////////////
         System.out.println("Hi");
-        /*cellIDwithLocation = new CellIDwithLocation(this);
-        CellID = cellIDwithLocation.cellID;*/
-        //System.out.println(CellID);
-        //Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
-//        initIperf();
+        if (settings_check){
+            settings_check = false;
+            // Start Updating Q
+        }
     }
 
     @Override
@@ -210,11 +215,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void RL_Decision(){
+        Date currentTime = Calendar.getInstance().getTime();
+
+        current_time = currentTime.getHours(); //Integer between 1 and 24
+        current_location= Integer.parseInt(getLocation());
+        // current_scenario = item;
+
         current_state=find_state(current_time,current_location,current_scenario);
         chosen_action =current_state.getlearner().take_decision();
         String res = "Please Choose: "+action_names[chosen_action];
         Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show();
         // Take User to settings and change variable check settings
+        settings_check = true;
         // Then go to onStart and call the RL_Study
     }
 
