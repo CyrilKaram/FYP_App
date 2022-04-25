@@ -106,22 +106,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
 
-//        this.getLocation();
-
-
-
 //        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
         ////////////////////////////////////////
         viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
             current_scenario=item;
-            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_SHORT).show();
             System.out.println("Outside " +Thread.currentThread());
             RL_Decision();
-//            new Ping().execute();
-//            new SpeedTestTask().execute();
-//            this.getLocation();
         });
         /////////////////////////////////////////
 
@@ -154,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             criteria_eval();
         } else {
         Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
-        getCurrentIP(); /////////////////////////////////////////////////
+//        getCurrentIP(); //REMOVE
         System.out.println("Hi");
         }
 
@@ -194,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
         CellID = cellIDwithLocation.getCellID();
         System.out.println("cell ID: "+CellID);
         return CellID;
-
         //Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
     }
 
@@ -206,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getCurrentIP() {
+    public void getCurrentIP() { //REMOVE
         // An instance of WifiManger is used to retrieve connection info.
         WifiManager wim = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
 
