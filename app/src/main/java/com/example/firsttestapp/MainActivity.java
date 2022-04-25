@@ -271,25 +271,29 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("Loss "+loss);
                     }
                     if(line.contains("avg")){
-                        int i=line.indexOf("/", 36);
+                        int i=line.indexOf("/", 30);
                         int j=line.indexOf("/", i+1);
                         latency = Double.parseDouble(line.substring(i+1, j))/2;
                         System.out.println("Latency "+latency);
                     }
                     if(line.contains("ttl")) {
-                        int i=line.indexOf("ttl");
+                        int i=line.indexOf("ms");
                         int j=line.indexOf("time");
-                        double ttl1= Double.parseDouble(line.substring(i+4, j-1));
+                        double ttl1= Double.parseDouble(line.substring(j+5, i-1));
                         ttls[ind]=ttl1;
                         ind++;
                     }
                 }
                 double ji=0;
                 for (int i=1;i<ttls.length;i++) {
+                    if (ttls[i]==0){
+                        ttls[i]=ttls[i-1];
+                    }
                     ji=ji+Math.abs(ttls[i]-ttls[i-1]);
                 }
                 jitter=ji/(ttls.length-1);
                 System.out.println("Jitter " +jitter);
+                System.out.println(res);
 
                 int exitValue = ipProcess.waitFor();
                 ipProcess.destroy();
