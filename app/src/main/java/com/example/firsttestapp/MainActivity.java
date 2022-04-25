@@ -9,6 +9,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.telephony.TelephonyManager;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,6 +38,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import androidx.annotation.Nullable;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ListenableWorker;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -55,6 +66,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import fr.bmartel.speedtest.SpeedTestReport;
 import fr.bmartel.speedtest.SpeedTestSocket;
@@ -70,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
     public static final String ACTION_DATA_ROAMING_SETTINGS = "android.settings.DATA_ROAMING_SETTINGS";
+    Constraints constraints = new Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .build();
+    final PeriodicWorkRequest workRequest = new PeriodicWorkRequest.
+            Builder(MyWorker.class,15, TimeUnit.MINUTES).build();
 
     // CRITERIA
     private double latency = 0;
@@ -127,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +152,20 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+//        WorkManager.getInstance().enqueue(workRequest);
+////        WorkManager.getInstance().enqueueUniquePeriodicWork("Weather Worker", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
+//        WorkManager.getInstance().getWorkInfoByIdLiveData(workRequest.getId())
+//                .observe(this, new Observer<WorkInfo>() {
+//                    @Override
+//                    public void onChanged(@Nullable WorkInfo workInfo) {
+//
+//                        //receiving back the data
+//                        if(workInfo != null && workInfo.getState().isFinished()){
+//                            System.out.println("We received "+workInfo.getOutputData().getString(MyWorker.TASK_DESC));
+//                        }
+//                    }
+//                });
     }
 
     @Override
@@ -409,5 +441,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
     }
+
+
 
 }

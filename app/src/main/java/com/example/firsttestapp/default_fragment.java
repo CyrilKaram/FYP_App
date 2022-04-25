@@ -88,26 +88,11 @@ public class default_fragment extends Fragment {
         defbut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView randomView = view.getRootView().findViewById(R.id.default_description);
-                Date currentTime = Calendar.getInstance().getTime();
-                x = currentTime.getHours(); //Integer between 1 and 24
 //                randomView.setText(x.toString());
                 viewModel.selectItem(1);
                 NavHostFragment.findNavController(default_fragment.this)
                         .navigate(R.id.action_default_fragment_to_FirstFragment);
                 ((MainActivity) getActivity()).getFloatingActionButton().show();
-
-//                randomView.setText("Ping Started");/////////////PING//////////
-//                try {
-//                    Ping ping = new Ping(new URL("https://www.google.com:443/"),getActivity().getApplicationContext());
-//                    randomView.setText(ping.getip());
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                    randomView.setText("Error");
-//                }///////////////////PING///////////////////
-
-
-//                x++;
             }
         });
     }
