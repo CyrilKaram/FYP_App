@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     // CRITERIA
     private double latency = 0;
-    private String throughput ="";
+    private double throughput =0;
     private double jitter = 0;
     private double loss = 0;
     private double[] battery = {0.9,0.8,0.7};
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             current_scenario=item;
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-            go_to_settings();
+//            RL_Decision();
 //            new Ping().execute();
 //            new SpeedTestTask().execute();
 //            this.getLocation();
@@ -147,13 +147,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
-        Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
-        getCurrentIP(); /////////////////////////////////////////////////
-        System.out.println("Hi");
         if (settings_check){
             settings_check = false;
             // Start Updating Q
+//            criteria_eval();
+            Toast.makeText(getApplicationContext(),"Welcome back from Settings", Toast.LENGTH_LONG).show();
+        } else {
+        Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
+        getCurrentIP(); /////////////////////////////////////////////////
+        System.out.println("Hi");
         }
+
     }
 
     @Override
@@ -195,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void go_to_settings(){
+        settings_check = true;
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
@@ -224,6 +229,21 @@ public class MainActivity extends AppCompatActivity {
         return binding.fab;
     }
 
+    public void criteria_eval(){
+        new Ping().execute();
+        new SpeedTestTask().execute();
+        for (State s : state_list){
+            if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+                s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
+                        throughput,
+                        battery[chosen_action],
+                        jitter,
+                        loss,
+                        latency );
+            }
+        }
+    }
+
     public void RL_Decision(){
         Date currentTime = Calendar.getInstance().getTime();
 
@@ -236,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         String res = "Please Choose: "+action_names[chosen_action];
         Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show();
         // Take User to settings and change variable check settings
-        settings_check = true;
+        go_to_settings();
         // Then go to onStart and call the RL_Study
     }
 
@@ -350,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("speedtest", "[COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
                     System.out.println("X= "+x);
                     res = report.getTransferRateBit().toString();
-                    throughput=res;
+                    throughput= Double.parseDouble(res);
                     System.out.println("DD: "+throughput);
                 }
 
