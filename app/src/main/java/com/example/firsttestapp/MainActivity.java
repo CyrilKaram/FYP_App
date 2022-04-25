@@ -37,17 +37,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import androidx.annotation.Nullable;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.ListenableWorker;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,6 +62,8 @@ import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.SpeedTestTask;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
             current_scenario=item;
-            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
             RL_Decision();
         });
