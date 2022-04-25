@@ -1,5 +1,6 @@
 package com.example.firsttestapp;
 // Au Revoir
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
     private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
+    public static final String ACTION_DATA_ROAMING_SETTINGS = "android.settings.DATA_ROAMING_SETTINGS";
 
     // CRITERIA
     private double latency = 0;
@@ -116,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
             current_scenario=item;
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-            new Ping().execute();
+            go_to_settings();
+//            new Ping().execute();
 //            new SpeedTestTask().execute();
 //            this.getLocation();
         });
@@ -189,6 +192,13 @@ public class MainActivity extends AppCompatActivity {
         return CellID;
 
         //Toast.makeText(getApplicationContext(),CellID, Toast.LENGTH_LONG).show();
+    }
+
+    public void go_to_settings(){
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+        startActivity(intent);
     }
 
     public void getCurrentIP() {
