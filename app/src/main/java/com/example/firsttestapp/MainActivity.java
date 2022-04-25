@@ -82,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
     public static final String ACTION_DATA_ROAMING_SETTINGS = "android.settings.DATA_ROAMING_SETTINGS";
-    Constraints constraints = new Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .build();
-    final PeriodicWorkRequest workRequest = new PeriodicWorkRequest.
-            Builder(MyWorker.class,15, TimeUnit.MINUTES).build();
+//    Constraints constraints = new Constraints.Builder()
+//            .setRequiresBatteryNotLow(true)
+//            .build();
+//    final PeriodicWorkRequest workRequest = new PeriodicWorkRequest.
+//            Builder(MyWorker.class,15, TimeUnit.MINUTES).build();
 
     // CRITERIA
     private double latency = 0;
