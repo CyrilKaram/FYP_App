@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             current_scenario=item;
             Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
             System.out.println("Outside " +Thread.currentThread());
-//            RL_Decision();
+            RL_Decision();
 //            new Ping().execute();
 //            new SpeedTestTask().execute();
 //            this.getLocation();
@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
         if (settings_check){
             settings_check = false;
             // Start Updating Q
-//            criteria_eval();
             Toast.makeText(getApplicationContext(),"Welcome back from Settings", Toast.LENGTH_LONG).show();
+            criteria_eval();
         } else {
         Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
         getCurrentIP(); /////////////////////////////////////////////////
@@ -231,17 +231,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void criteria_eval(){
         new Ping().execute();
-        new SpeedTestTask().execute();
-        for (State s : state_list){
-            if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
-                s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
-                        throughput,
-                        battery[chosen_action],
-                        jitter,
-                        loss,
-                        latency );
-            }
-        }
+//        new SpeedTestTask().execute();
+//        for (State s : state_list){
+//            if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+//                s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
+//                        throughput,
+//                        battery[chosen_action],
+//                        jitter,
+//                        loss,
+//                        latency );
+//            }
+//        }
     }
 
     public void RL_Decision(){
@@ -252,7 +252,11 @@ public class MainActivity extends AppCompatActivity {
         // current_scenario = item;
 
         current_state=find_state(current_time,current_location,current_scenario);
-        chosen_action =current_state.getlearner().take_decision();
+        for (State s : state_list){
+            if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+                chosen_action =s.getlearner().take_decision();
+            }
+        }
         String res = "Please Choose: "+action_names[chosen_action];
         Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show();
         // Take User to settings and change variable check settings
@@ -263,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
     public State find_state(int t, int l, int sc){
         for (State s : state_list){
             if (t==s.gettime() && l==s.getlocation() && sc==s.getscenario() ){
+                System.out.println("The State Exists: "+s.getscenario()+" "+s.gettime()+" "+s.getlocation());
                 return s;
             }
         }
@@ -271,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
         State temp_state = new State(this.ID,temp_agent,t,l,sc);
         state_list.add(temp_state);
         this.ID++;
+        System.out.println("New State: "+temp_state.getscenario()+" "+temp_state.gettime()+" "+temp_state.getlocation());
         return temp_state; //Then take decision(QL), then compute criteria (main act), then update Q (QL)
     }
 
@@ -345,8 +351,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            latency++;
-            System.out.println("SS: "+latency);
+            new SpeedTestTask().execute();
         }
     }
 
@@ -371,7 +376,17 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("X= "+x);
                     res = report.getTransferRateBit().toString();
                     throughput= Double.parseDouble(res);
-                    System.out.println("DD: "+throughput);
+//                    System.out.println("DD: "+throughput);
+                    for (State s : state_list){
+                        if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+                            s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
+                                    throughput,
+                                    battery[chosen_action],
+                                    jitter,
+                                    loss,
+                                    latency );
+                        }
+                    }
                 }
 
                 @Override

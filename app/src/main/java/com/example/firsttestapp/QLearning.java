@@ -56,7 +56,7 @@ public class QLearning {
         }
         else {
             index = rand.nextInt(3); //3 Actions
-            System.out.printf("We chose action %d ",index+1);
+            System.out.printf("We chose action %d \n",index+1);
         }
         return index;
     }
@@ -77,7 +77,7 @@ public class QLearning {
 
     public void update_Q(int act, double[] w, double throughp, double batt, double jitt, double packloss, double lat){
         //Normalisation
-        throughp=throughp/30; //30Mbps
+        throughp=throughp/30000000; //30Mbps
 
         if (jitt!=0){
             jitt=6/jitt;
@@ -97,8 +97,17 @@ public class QLearning {
             lat=1;
         }
 
+
+        System.out.println("Old Q Values");
+        for (double q: Q_values){
+            System.out.println(q);
+        }
         //UPDATE Q = (1-alpha) * Q +alpha * reward
         Q_values[act]=(1-alpha)*Q_values[act] + alpha * (throughp*w[0] +batt*w[1] +jitt*w[2] +packloss*w[3] +lat*w[4]);
+        System.out.println("New Q Values:");
+        for (double q: Q_values){
+            System.out.println(q);
+        }
         //Maybe act-1 not act
     }
 
