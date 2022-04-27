@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -245,6 +246,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void criteria_eval(){
+//        Thread thread = new Thread(){
+//            public  void run(){
+//                System.out.println("We are in Thread");
+//                try {
+//                    String ping= new Ping().execute().get();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                try {
+//                    System.out.println("try");
+//                    String speed = new SpeedTestTask().execute().get();
+//                    System.out.println("try ends");
+//                } catch (ExecutionException e) {
+//                    System.out.println("catch: "+e);
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    System.out.println("catch2: "+e);
+//                    e.printStackTrace();
+//                }
+//                for (com.example.firsttestapp.State s : state_list){
+//                    if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+//                        s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
+//                        throughput,
+//                        battery[chosen_action],
+//                        jitter,
+//                        loss,
+//                        latency );
+//            }
+//        }
+//            }
+//        };
+//        thread.start();
         new Ping().execute();
 //        new SpeedTestTask().execute();
 //        for (State s : state_list){
@@ -322,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("Loss "+loss);
                     }
                     if(line.contains("avg")){
-                        int i=line.indexOf("/", 30);
+                        int i=line.indexOf("/", 20);
                         int j=line.indexOf("/", i+1);
                         latency = Double.parseDouble(line.substring(i+1, j))/2;
                         System.out.println("Latency "+latency);
@@ -377,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
+            System.out.println("speedtest starts");
 
             SpeedTestSocket speedTestSocket = new SpeedTestSocket();
 
@@ -388,10 +424,10 @@ public class MainActivity extends AppCompatActivity {
                     // called when download/upload is finished
                     Log.v("speedtest", "[COMPLETED] rate in octet/s : " + report.getTransferRateOctet());
                     Log.v("speedtest", "[COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
-                    System.out.println("X= "+x);
+//                    System.out.println("X= "+x);
                     res = report.getTransferRateBit().toString();
                     throughput= Double.parseDouble(res);
-//                    System.out.println("DD: "+throughput);
+                    System.out.println("throughput:  "+throughput);
                     for (State s : state_list){
                         if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
                             s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
@@ -407,12 +443,26 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onError(SpeedTestError speedTestError, String errorMessage) {
                     // called when a download/upload error occur
+                    System.out.println("Speedtest failed");
+
+                    throughput= 0;
+                    System.out.println("throughput:  "+throughput);
+                    for (State s : state_list){
+                        if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+                            s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
+                                    throughput,
+                                    battery[chosen_action],
+                                    jitter,
+                                    loss,
+                                    latency );
+                        }
+                    }
                 }
 
                 @Override
                 public void onProgress(float percent, SpeedTestReport report) {
                     // called to notify download/upload progress
-                    x++;
+                   // System.out.println("onProgess");
 //                Log.v("speedtest", "[PROGRESS] progress : " + percent + "%");
 //                Log.v("speedtest", "[PROGRESS] rate in octet/s : " + report.getTransferRateOctet());
 //                Log.v("speedtest", "[PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
@@ -426,10 +476,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
 //        @Override
-//        protected void onPostExecute(String s) {
-//            dd=this.res;
-//            System.out.println("DD: "+dd);
-//        }
+//        protected void onPostExecute(String ss) {
+//            for (State s : state_list){
+//                        if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
+//                            s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
+//                                    throughput,
+//                                    battery[chosen_action],
+//                                    jitter,
+//                                    loss,
+//                                    latency );
+//                        }
+//                    }
+        //}
 
     }
 

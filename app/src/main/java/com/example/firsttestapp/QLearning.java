@@ -36,7 +36,9 @@ public class QLearning {
         double y;
         y = rand.nextDouble();
         nbtrials++;
+        System.out.println("old epsilon :"+epsilon);
         epsilon= 1 - 1/(1+Math.exp((-nbtrials+7)/2));
+        System.out.println("new epsilon :"+epsilon);
         if (y>epsilon) {
             return calculateQ("Exploitation");
         }
@@ -76,6 +78,12 @@ public class QLearning {
     }
 
     public void update_Q(int act, double[] w, double throughp, double batt, double jitt, double packloss, double lat){
+
+        System.out.println("Weights");
+        for (double ww: w){
+            System.out.println(ww);
+        }
+
         //Normalisation
         throughp=throughp/30000000; //30Mbps
 
