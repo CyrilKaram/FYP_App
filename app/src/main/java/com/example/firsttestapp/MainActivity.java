@@ -1,8 +1,10 @@
 package com.example.firsttestapp;
 // Au Revoir
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -10,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.telephony.TelephonyManager;
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     String CellID;
 
     //Bonjour tout le monde
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
             current_scenario=item;
-            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_SHORT).show();
             System.out.println("Outside " +Thread.currentThread());
             RL_Decision();
         });
@@ -136,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+//        if(!foregroundServiceRunning()) {
+//            Intent serviceIntent = new Intent(this, MyForegroundService.class);
+//            startForegroundService(serviceIntent);
+//        }
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
 //        WorkManager.getInstance().enqueue(workRequest);
 ////        WorkManager.getInstance().enqueueUniquePeriodicWork("Weather Worker", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
 //        WorkManager.getInstance().getWorkInfoByIdLiveData(workRequest.getId())
@@ -158,6 +165,16 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                    }
 //                });
+    }
+
+    public boolean foregroundServiceRunning(){
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if(MyForegroundService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -209,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getLocation(){
+        System.out.println("We  entered get location");
         cellIDwithLocation = new CellIDwithLocation(this);
         CellID = cellIDwithLocation.getCellID();
         System.out.println("cell ID: "+CellID);
@@ -477,19 +495,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-//        @Override
-//        protected void onPostExecute(String ss) {
-//            for (State s : state_list){
-//                        if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
-//                            s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
-//                                    throughput,
-//                                    battery[chosen_action],
-//                                    jitter,
-//                                    loss,
-//                                    latency );
-//                        }
-//                    }
-        //}
+
 
     }
 
