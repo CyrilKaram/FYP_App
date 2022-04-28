@@ -1,7 +1,10 @@
 package com.example.firsttestapp;
 // Au Revoir
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
@@ -69,8 +73,10 @@ import fr.bmartel.speedtest.model.SpeedTestError;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Servicecallback {
 
+    private MyForegroundService myService;
+    private boolean bound = false;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private ItemViewModel viewModel;
@@ -98,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     String[] action_names = {"2G","3G","4G"};
     private int current_time;
     private int current_location;
-    private int current_scenario;
+    private int current_scenario = 1;
     State current_state;
     int chosen_action;
     double[][] weights = {
@@ -165,16 +171,47 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                    }
 //                });
+//        if(!foregroundServiceRunning()) {
+            Intent serviceIntent = new Intent(this, MyForegroundService.class);
+            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            startForegroundService(serviceIntent);
+//        }
     }
 
-    public boolean foregroundServiceRunning(){
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
-            if(MyForegroundService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            MyForegroundService.LocalBinder binder = (MyForegroundService.LocalBinder) iBinder;
+            myService = binder.getService();
+            bound = true;
+            myService.setCallbacks(MainActivity.this);
         }
-        return false;
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            bound = false;
+        }
+    };
+
+//    public boolean foregroundServiceRunning(){
+//        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
+//            if(MyForegroundService.class.getName().equals(service.service.getClassName())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from service
+//        if (bound) {
+//            myService.setCallbacks(null); // unregister
+//            unbindService(serviceConnection);
+//            bound = false;
+//        }
     }
 
     @Override
