@@ -2,6 +2,9 @@ package com.example.firsttestapp;
 // Au Revoir
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -24,6 +27,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -70,6 +74,7 @@ import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.SpeedTestTask;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
+
 
 
 
@@ -207,11 +212,11 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
     protected void onStop() {
         super.onStop();
         // Unbind from service
-//        if (bound) {
-//            myService.setCallbacks(null); // unregister
-//            unbindService(serviceConnection);
-//            bound = false;
-//        }
+        if (bound) {
+            myService.setCallbacks(null); // unregister
+            unbindService(serviceConnection);
+            bound = false;
+        }
     }
 
     @Override
@@ -277,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
         startActivity(intent);
+
     }
 
     public void getCurrentIP() { //REMOVE
@@ -351,10 +357,13 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
 //        }
     }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void RL_Decision(){
         Date currentTime = Calendar.getInstance().getTime();
 
-        current_time = currentTime.getHours(); //Integer between 1 and 24
+        current_time = currentTime.getHours(); //Integer between 0 and 23
         current_location= Integer.parseInt(getLocation());
         // current_scenario = item;
 
@@ -365,9 +374,26 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
             }
         }
         String res = "Please Choose: "+action_names[chosen_action];
-        Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show();
+        final String CHANNELID2 = "Foreground Service ID";
+        NotificationChannel channel2 = new NotificationChannel(
+                CHANNELID2,
+                CHANNELID2,
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        getSystemService(NotificationManager.class).createNotificationChannel(channel2);
+        Notification.Builder notification2 = new Notification.Builder(this, CHANNELID2)
+                .setContentText(res)
+                .setContentTitle("Time to switch!")
+                .setSmallIcon(R.drawable.ic_launcher_background);
+             //   .setPriority(Notification.PRIORITY_HIGH);
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
+        managerCompat.notify(1005, notification2.build());
+
+        //Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show(); //doesn't work because threading
         // Take User to settings and change variable check settings
+
         go_to_settings();
+
         // Then go to onStart and call the RL_Study
     }
 
