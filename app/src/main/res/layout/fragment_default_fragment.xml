@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Approach_1"
+        android:textColor="@color/cardview_dark_background"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/default_description"
         app:layout_constraintEnd_toEndOf="parent"
