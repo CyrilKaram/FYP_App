@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/screenBackground2"
-            android:backgroundTint="@color/screenBackground2"
+            android:backgroundTint="@color/buttonBackground"
             app:popupTheme="@style/Theme.FirstTestApp.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -30,7 +30,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        app:backgroundTint="@android:color/holo_blue_light"
+        app:backgroundTint="@color/buttonBackground"
         app:srcCompat="@android:drawable/ic_dialog_info" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

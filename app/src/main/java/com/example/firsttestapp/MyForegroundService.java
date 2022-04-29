@@ -51,7 +51,7 @@ public class MyForegroundService extends Service {
 
                         while (true) {
                             try {
-                                Thread.sleep(8000);
+                                Thread.sleep(300000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
