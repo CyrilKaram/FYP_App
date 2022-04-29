@@ -210,8 +210,8 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         Toast.makeText(getApplicationContext(),"Hello!", Toast.LENGTH_LONG).show(); //onStart Called
 //        getCurrentIP(); //REMOVE
         System.out.println("Hi");
-        String lll = String.valueOf(state_list.size());
-            Toast.makeText(getApplicationContext(),lll , Toast.LENGTH_LONG).show();
+//        String lll = String.valueOf(state_list.size());
+//        Toast.makeText(getApplicationContext(),lll , Toast.LENGTH_LONG).show();
         }
 
     }
