@@ -88,11 +88,6 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
     private TextView textres;
     ExecutorService executorService = Executors.newFixedThreadPool(4);
     public static final String ACTION_DATA_ROAMING_SETTINGS = "android.settings.DATA_ROAMING_SETTINGS";
-//    Constraints constraints = new Constraints.Builder()
-//            .setRequiresBatteryNotLow(true)
-//            .build();
-//    final PeriodicWorkRequest workRequest = new PeriodicWorkRequest.
-//            Builder(MyWorker.class,15, TimeUnit.MINUTES).build();
 
     // CRITERIA
     private double latency = 0;
@@ -130,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         super.onCreate(savedInstanceState);
         textres = (TextView) findViewById(R.id.textview_first);
 
-//        text = (TextView) getFragmentManager().findFragmentById(R.id.FirstFragment).find;
         ////////////////////////////////////////
         viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
         viewModel.getSelectedItem().observe(this, item -> {
@@ -151,10 +145,6 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-//        if(!foregroundServiceRunning()) {
-//            Intent serviceIntent = new Intent(this, MyForegroundService.class);
-//            startForegroundService(serviceIntent);
-//        }
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,19 +153,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
                         .setAction("Action", null).show();
             }
         });
-//        WorkManager.getInstance().enqueue(workRequest);
-////        WorkManager.getInstance().enqueueUniquePeriodicWork("Weather Worker", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
-//        WorkManager.getInstance().getWorkInfoByIdLiveData(workRequest.getId())
-//                .observe(this, new Observer<WorkInfo>() {
-//                    @Override
-//                    public void onChanged(@Nullable WorkInfo workInfo) {
-//
-//                        //receiving back the data
-//                        if(workInfo != null && workInfo.getState().isFinished()){
-//                            System.out.println("We received "+workInfo.getOutputData().getString(MyWorker.TASK_DESC));
-//                        }
-//                    }
-//                });
+
 //        if(!foregroundServiceRunning()) {
             Intent serviceIntent = new Intent(this, MyForegroundService.class);
             bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -285,25 +263,6 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
 
     }
 
-    public void getCurrentIP() { //REMOVE
-        // An instance of WifiManger is used to retrieve connection info.
-        WifiManager wim = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-
-        if (wim.getConnectionInfo() != null) {
-            if ((wim.getConnectionInfo().getIpAddress()) != 0) {
-                //IP is parsed into readable format
-                Toast.makeText(getApplicationContext(),"Your IP address is: "
-                        + Formatter.formatIpAddress(wim.getConnectionInfo()
-                        .getIpAddress()), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(),"1Error: a WIFI connection cannot be detected.", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(),"2Error: a WIFI connection cannot be detected.", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
     public FloatingActionButton getFloatingActionButton() {
         return binding.fab;
     }
@@ -344,17 +303,6 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
 //        };
 //        thread.start();
         new Ping().execute();
-//        new SpeedTestTask().execute();
-//        for (State s : state_list){
-//            if (current_time==s.gettime() && current_location==s.getlocation() && current_scenario==s.getscenario() ){
-//                s.getlearner().update_Q(chosen_action, weights[current_scenario-1],
-//                        throughput,
-//                        battery[chosen_action],
-//                        jitter,
-//                        loss,
-//                        latency );
-//            }
-//        }
     }
 
 

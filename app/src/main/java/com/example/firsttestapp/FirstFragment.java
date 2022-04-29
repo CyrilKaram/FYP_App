@@ -86,12 +86,6 @@ public class FirstFragment extends Fragment {
         });
     }
 
-    private void countMe(View view) {
-        String countString = showCountTextView.getText().toString();
-        Integer count = Integer.parseInt(countString);
-        count++;
-        showCountTextView.setText(count.toString());
-    }
 
     @Override
     public void onDestroyView() {

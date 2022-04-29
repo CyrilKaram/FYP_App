@@ -31,24 +31,26 @@ public class QLearning {
     }
 
     //Exploration or exploitation
-    public int take_decision() { //Return String or int(action) and Tell the User with Toast
+    public int take_decision() {
         Random rand = new Random();
         double y;
         y = rand.nextDouble();
         nbtrials++;
         System.out.println("old epsilon :"+epsilon);
-        epsilon= 1 - 1/(1+Math.exp((-nbtrials+7)/2));
-        System.out.println("new epsilon :"+epsilon);
         if (y>epsilon) {
+            epsilon= 1 - 1/(1+Math.exp((-nbtrials+7)/2));
+            System.out.println("new epsilon :"+epsilon);
             return calculateQ("Exploitation");
         }
         else {
+            epsilon= 1 - 1/(1+Math.exp((-nbtrials+7)/2));
+            System.out.println("new epsilon :"+epsilon);
             return calculateQ("Exploration");
         }
     }
 
-    public int calculateQ(String exp) { //Replace with Update_Q at the end
-        Random rand = new Random();      // Take parts of this code and put them in take_decision
+    public int calculateQ(String exp) {
+        Random rand = new Random();
         System.out.println(exp);
         double y = rand.nextDouble();
         int index;
@@ -64,7 +66,7 @@ public class QLearning {
     }
 
     // Find index of maximum Qvalue
-    int maxQ(Double[] matrix) { //keep and call in take_decision
+    int maxQ(Double[] matrix) {
         double maxValue = -10;
         int maxvalue_index = 0;
         for (int s=0; s<matrix.length; s++) {

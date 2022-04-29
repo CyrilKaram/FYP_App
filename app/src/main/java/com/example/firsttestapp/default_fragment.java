@@ -97,9 +97,5 @@ public class default_fragment extends Fragment {
         });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        ((MainActivity) getActivity()).getFloatingActionButton().show();
-//    }
 
 }
