@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         viewModel.getSelectedItem().observe(this, item -> {
             // Perform an action with the latest item data
             current_scenario=item;
-            Toast.makeText(getApplicationContext(),item.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Scenario "+item.toString(), Toast.LENGTH_SHORT).show();
             System.out.println("Outside " +Thread.currentThread());
             RL_Decision();
         });
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
             Toast.makeText(getApplicationContext(),"Welcome back from Settings", Toast.LENGTH_LONG).show();
             criteria_eval();
         } else {
-        Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
+        Toast.makeText(getApplicationContext(),"Hello!", Toast.LENGTH_LONG).show(); //onStart Called
 //        getCurrentIP(); //REMOVE
         System.out.println("Hi");
         String lll = String.valueOf(state_list.size());
