@@ -67,8 +67,26 @@ public class MyForegroundService extends Service {
                                 System.out.println("old location: "+ old_location);
                                 System.out.println("old time: "+ old_time);
 
-                                if ((old_time != current_time) || !(old_location.equals(current_location))){
+                                if (current_time>=0 && current_time<=5){
+                                    current_time=1;
+                                }
+                                if (current_time>=6 && current_time<=7){
+                                    current_time=2;
+                                }
+                                if (current_time>=8 && current_time<=11){
+                                    current_time=3;
+                                }
+                                if (current_time>=12 && current_time<=15){
+                                    current_time=4;
+                                }
+                                if (current_time>=16 && current_time<=17){
+                                    current_time=5;
+                                }
+                                if (current_time>=18 && current_time<=24){
+                                    current_time=6;
+                                }
 
+                                if ((old_time != current_time) || !(old_location.equals(current_location))){
 
                                     main.RL_Decision();
 
