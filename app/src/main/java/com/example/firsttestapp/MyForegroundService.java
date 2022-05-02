@@ -91,7 +91,6 @@ public class MyForegroundService extends Service {
                                 if ((old_time != current_time) || !(old_location.equals(current_location))){
 
                                     main.RL_Decision();
-
                                     System.out.println("Time or Location change detected");
                                 }
                                 old_time=current_time;
@@ -100,7 +99,7 @@ public class MyForegroundService extends Service {
              //               }
 
                             try {
-                                Thread.sleep(10000);
+                                Thread.sleep(290000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
