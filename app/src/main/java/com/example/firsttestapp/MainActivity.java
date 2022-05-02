@@ -190,11 +190,11 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
     protected void onStop() {
         super.onStop();
         // Unbind from service
-        if (bound) {
-            myService.setCallbacks(null); // unregister
-            unbindService(serviceConnection);
-            bound = false;
-        }
+//        if (bound) {
+//            myService.setCallbacks(null); // unregister
+//            unbindService(serviceConnection);
+//            bound = false;
+//        }
     }
 
     @Override

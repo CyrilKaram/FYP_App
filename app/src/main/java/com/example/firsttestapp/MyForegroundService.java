@@ -51,13 +51,15 @@ public class MyForegroundService extends Service {
 
                         while (true) {
                             try {
-                                Thread.sleep(300000);
+                                Thread.sleep(10000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                             Log.e("Service", "Service is running...");
 
-                            if (main != null) {
+                      //      if (main != null) {
+                                Log.e("Service", "Service is still running...");
+
                                 Date currentTime = Calendar.getInstance().getTime();
 
                                 int current_time = currentTime.getHours(); //Integer between 0 and 23
@@ -95,13 +97,13 @@ public class MyForegroundService extends Service {
                                 old_time=current_time;
                                 old_location=current_location;
 
-                            }
+             //               }
 
-//                            try {
-//                                Thread.sleep(30000);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
+                            try {
+                                Thread.sleep(10000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
