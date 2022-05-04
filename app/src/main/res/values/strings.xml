@@ -15,7 +15,7 @@
     <string name="Approach_3">Video Streaming</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="default_description">The Default Scenario is the best overall scenario, enough for most of your daily internet activities like media consumption,
+    <string name="default_description">The Default Scenario is the best overall scenario, enough for most of your daily internet activites like media consumption,
 browsing and texting. This will reduce your interaction with the app as much as possible for the best user experience.</string>
     <string name="background_description">The Background Usage scenario is best for when your phone is on standby or not in use. This will help reduce your battery
 consumption, while still keeping your phone connected in the background to receive calls, texts and other notifications.</string>

@@ -46,36 +46,12 @@ public class MyForegroundService extends Service {
                 new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            Thread.sleep(7000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        Date currentTime = Calendar.getInstance().getTime();
-                        int old_time = currentTime.getHours();
-                        String old_location = main.getLocation();
-                        if (old_time>=0 && old_time<=5){
-                            old_time=1;
-                        }
-                        if (old_time>=6 && old_time<=7){
-                            old_time=2;
-                        }
-                        if (old_time>=8 && old_time<=11){
-                            old_time=3;
-                        }
-                        if (old_time>=12 && old_time<=15){
-                            old_time=4;
-                        }
-                        if (old_time>=16 && old_time<=17){
-                            old_time=5;
-                        }
-                        if (old_time>=18 && old_time<=24){
-                            old_time=6;
-                        }
+                        int old_time = 0;
+                        String old_location = "0";
 
                         while (true) {
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(10000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -84,7 +60,7 @@ public class MyForegroundService extends Service {
                       //      if (main != null) {
                                 Log.e("Service", "Service is still running...");
 
-                                currentTime = Calendar.getInstance().getTime();
+                                Date currentTime = Calendar.getInstance().getTime();
 
                                 int current_time = currentTime.getHours(); //Integer between 0 and 23
                                 String current_location = main.getLocation();
@@ -123,7 +99,7 @@ public class MyForegroundService extends Service {
              //               }
 
                             try {
-                                Thread.sleep(50000);
+                                Thread.sleep(290000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
