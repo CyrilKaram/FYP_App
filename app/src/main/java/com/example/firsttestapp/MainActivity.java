@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
             Notification.Builder notification2 = new Notification.Builder(this, CHANNELID2)
                     .setContentText(res)
                     .setContentTitle("Time to switch!")
-                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setAutoCancel(true)
                     .setContentIntent(resultPendingIntent);
             //   .setPriority(Notification.PRIORITY_HIGH);

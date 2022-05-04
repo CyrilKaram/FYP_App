@@ -144,7 +144,7 @@ public class MyForegroundService extends Service {
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
                 .setContentText("Service is running")
                 .setContentTitle("Service enabled")
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setSmallIcon(R.drawable.ic_launcher_foreground);
 
 
         startForeground(1001, notification.build());
