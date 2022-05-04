@@ -457,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
 
     public class SpeedTestTask extends AsyncTask<Void, Void, String> {
 
-       // private int x =0;
+        private int x =0;
         private String res="";
 
         @Override
@@ -513,14 +513,12 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
                 public void onProgress(float percent, SpeedTestReport report) {
                     // called to notify download/upload progress
                    // System.out.println("onProgess");
-               // Log.v("speedtest", "[PROGRESS] progress : " + percent + "%");
+//                Log.v("speedtest", "[PROGRESS] progress : " + percent + "%");
 //                Log.v("speedtest", "[PROGRESS] rate in octet/s : " + report.getTransferRateOctet());
 //                Log.v("speedtest", "[PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
                 }
             });
 
-
-            //speedTestSocket.startDownload("ftp://speedtest.tele2.net/1MB.zip");
             speedTestSocket.startDownload("http://ipv4.ikoula.testdebit.info/1M.iso");
 //        speedTestSocket.startFixedDownload("http://ipv4.ikoula.testdebit.info/10M.iso", 1000);
 
