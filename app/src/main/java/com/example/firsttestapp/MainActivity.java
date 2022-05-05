@@ -519,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
                 }
             });
 
-            speedTestSocket.startDownload("http://ipv4.ikoula.testdebit.info/1M.iso");
+            speedTestSocket.startDownload("http://ipv4.ikoula.testdebit.info/500k.iso");
 //        speedTestSocket.startFixedDownload("http://ipv4.ikoula.testdebit.info/10M.iso", 1000);
 
             return null;
