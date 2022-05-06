@@ -72,11 +72,13 @@ public class QLearning {
         for (int s=0; s<matrix.length; s++) {
             double value = matrix[s];
 
-            if (value > maxValue)
+            if (value > maxValue) {
                 maxValue = value;
-            maxvalue_index = s;
+                maxvalue_index = s;
+            }
         }
         return maxvalue_index;
+
     }
 
     public void update_Q(int act, double[] w, double throughp, double batt, double jitt, double packloss, double lat){
