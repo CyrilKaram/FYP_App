@@ -158,11 +158,13 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
             }
         });
 
-//        if(!foregroundServiceRunning()) {
+        if(!foregroundServiceRunning()) {
             Intent serviceIntent = new Intent(this, MyForegroundService.class);
             bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
             startForegroundService(serviceIntent);
-//        }
+        }
+
+        System.out.println("onCreate!!!");
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -180,15 +182,15 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         }
     };
 
-//    public boolean foregroundServiceRunning(){
-//        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
-//            if(MyForegroundService.class.getName().equals(service.service.getClassName())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    public boolean foregroundServiceRunning(){
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if(MyForegroundService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onStop() {
@@ -313,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void RL_Decision(){
+        System.out.println("hon");
         Date currentTime = Calendar.getInstance().getTime();
 
         current_time = currentTime.getHours(); //Integer between 0 and 23
@@ -335,7 +338,8 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
             Intent resultIntent = new Intent();
             resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             resultIntent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
-            PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_IMMUTABLE);
+
 
 
             final String CHANNELID2 = "Foreground Service ID";
@@ -354,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
             //   .setPriority(Notification.PRIORITY_HIGH);
             NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
             managerCompat.notify(1005, notification2.build());
+
 
 
         //Toast.makeText(getApplicationContext(),res, Toast.LENGTH_LONG).show(); //doesn't work because threading
