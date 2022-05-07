@@ -315,12 +315,31 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void RL_Decision(){
-        System.out.println("hon");
+
+        System.out.println("RL decision");
         Date currentTime = Calendar.getInstance().getTime();
 
         current_time = currentTime.getHours(); //Integer between 0 and 23
         current_location= Integer.parseInt(getLocation());
         // current_scenario = item;
+        if (current_time>=0 && current_time<=5){
+            current_time=1;
+        }
+        if (current_time>=6 && current_time<=7){
+            current_time=2;
+        }
+        if (current_time>=8 && current_time<=11){
+            current_time=3;
+        }
+        if (current_time>=12 && current_time<=15){
+            current_time=4;
+        }
+        if (current_time>=16 && current_time<=17){
+            current_time=5;
+        }
+        if (current_time>=18 && current_time<=23){
+            current_time=6;
+        }
 
         current_state=find_state(current_time,current_location,current_scenario);
         for (State s : state_list){
@@ -370,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
     }
 
     public State find_state(int t, int l, int sc){
+
         for (State s : state_list){
             if (t==s.gettime() && l==s.getlocation() && sc==s.getscenario() ){
                 System.out.println("The State Exists: "+s.getscenario()+" "+s.gettime()+" "+s.getlocation());

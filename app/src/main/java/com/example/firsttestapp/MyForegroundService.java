@@ -71,7 +71,7 @@ public class MyForegroundService extends Service {
                         if (old_time>=16 && old_time<=17){
                             old_time=5;
                         }
-                        if (old_time>=18 && old_time<=24){
+                        if (old_time>=18 && old_time<=23){
                             old_time=6;
                         }
 
@@ -110,7 +110,7 @@ public class MyForegroundService extends Service {
                                 if (current_time>=16 && current_time<=17){
                                     current_time=5;
                                 }
-                                if (current_time>=18 && current_time<=24){
+                                if (current_time>=18 && current_time<=23){
                                     current_time=6;
                                 }
 

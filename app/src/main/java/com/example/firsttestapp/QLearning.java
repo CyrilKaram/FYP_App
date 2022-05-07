@@ -11,7 +11,7 @@ public class QLearning {
     private final double alpha = 0.1; // Learning rate
     private double epsilon = 1; // Exploration rate
     private double nbtrials = 0;
-    Double[] Q_values={0.7,0.8,0.9};
+    Double[] Q_values={0.5,0.6,0.65};
     private final int actionsCount = 3; //Number of states
 
 
@@ -68,7 +68,7 @@ public class QLearning {
     // Find index of maximum Qvalue
     int maxQ(Double[] matrix) {
         double maxValue = -10;
-        int maxvalue_index = 0;
+        int maxvalue_index = -1;
         for (int s=0; s<matrix.length; s++) {
             double value = matrix[s];
 
