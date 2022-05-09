@@ -11,7 +11,7 @@ public class QLearning {
     private final double alpha = 0.1; // Learning rate
     private double epsilon = 1; // Exploration rate
     private double nbtrials = 0;
-    Double[] Q_values={0.5,0.6,0.65};
+    Double[] Q_values={0.55,0.6,0.65};
     private final int actionsCount = 3; //Number of states
 
 

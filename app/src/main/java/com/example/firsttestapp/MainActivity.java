@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         } else {
         Toast.makeText(getApplicationContext(),"Hello!", Toast.LENGTH_LONG).show(); //onStart Called
 //        getCurrentIP(); //REMOVE
-        System.out.println("Hi");
+        System.out.println("We are in onStart");
 //        String lll = String.valueOf(state_list.size());
 //        Toast.makeText(getApplicationContext(),lll , Toast.LENGTH_LONG).show();
         }
@@ -229,20 +229,20 @@ public class MainActivity extends AppCompatActivity implements Servicecallback {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {
